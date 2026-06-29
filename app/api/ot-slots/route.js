@@ -1,25 +1,25 @@
+import { redis } from '../../lib/redis';
 import { otSlots } from '../../data';
+
+const SLOTS_KEY = 'ot:slots';
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const date      = searchParams.get('date');      // YYYY-MM-DD
-  const specialty = searchParams.get('specialty'); // General Surgery, Cardiac, etc.
-  const status    = searchParams.get('status');    // available, booked
+  const date = searchParams.get('date');
+  const status = searchParams.get('status');
 
-  let result = [...otSlots];
-  if (date)      result = result.filter(s => s.date === date);
-  if (specialty) result = result.filter(s => s.specialty.toLowerCase().includes(specialty.toLowerCase()));
-  if (status)    result = result.filter(s => s.status === status);
+  let slots = JSON.parse(await redis.get(SLOTS_KEY) || JSON.stringify(otSlots));
 
-  const summary = {
-    total:     result.length,
-    available: result.filter(s => s.status === 'available').length,
-    booked:    result.filter(s => s.status === 'booked').length,
-  };
+  if (date) slots = slots.filter(s => s.date === date);
+  if (status) slots = slots.filter(s => s.status === status);
+
+  const available = slots.filter(s => s.status === 'available').length;
+  const booked = slots.filter(s => s.status === 'booked').length;
+  const total = slots.length;
 
   return Response.json({
     success: true,
-    summary,
-    slots: result,
+    summary: { total, available, booked },
+    slots,
   });
 }
