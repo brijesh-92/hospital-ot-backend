@@ -150,6 +150,21 @@ export const otSlots = [
   // July 2
   { slot_id: "SLOT-015", ot_room: "OT-1", date: "2026-07-02", date_display: "Thu, 2 July 2026",  time: "08:00", time_end: "10:00", duration_mins: 120, status: "available", specialty: "General Surgery", booked_by: null },
   { slot_id: "SLOT-016", ot_room: "OT-2", date: "2026-07-02", date_display: "Thu, 2 July 2026",  time: "10:00", time_end: "13:00", duration_mins: 180, status: "available", specialty: "Cardiac Surgery", booked_by: null },
+  // July 3
+  { slot_id: "SLOT-017", ot_room: "OT-1", date: "2026-07-03", date_display: "Fri, 3 July 2026",  time: "08:00", time_end: "10:00", duration_mins: 120, status: "available", specialty: "General Surgery", booked_by: null },
+  { slot_id: "SLOT-018", ot_room: "OT-2", date: "2026-07-03", date_display: "Fri, 3 July 2026",  time: "09:30", time_end: "12:30", duration_mins: 180, status: "available", specialty: "Cardiac Surgery", booked_by: null },
+  { slot_id: "SLOT-019", ot_room: "OT-3", date: "2026-07-03", date_display: "Fri, 3 July 2026",  time: "10:30", time_end: "11:30", duration_mins: 60,  status: "available", specialty: "Neuro Surgery",   booked_by: null },
+  { slot_id: "SLOT-020", ot_room: "OT-4", date: "2026-07-03", date_display: "Fri, 3 July 2026",  time: "13:00", time_end: "15:00", duration_mins: 120, status: "available", specialty: "Orthopaedics",    booked_by: null },
+  // July 4
+  { slot_id: "SLOT-021", ot_room: "OT-1", date: "2026-07-04", date_display: "Sat, 4 July 2026",  time: "08:00", time_end: "10:00", duration_mins: 120, status: "available", specialty: "General Surgery", booked_by: null },
+  { slot_id: "SLOT-022", ot_room: "OT-2", date: "2026-07-04", date_display: "Sat, 4 July 2026",  time: "10:00", time_end: "11:00", duration_mins: 60,  status: "available", specialty: "Neuro Surgery",   booked_by: null },
+  { slot_id: "SLOT-023", ot_room: "OT-3", date: "2026-07-04", date_display: "Sat, 4 July 2026",  time: "09:00", time_end: "12:00", duration_mins: 180, status: "available", specialty: "Cardiac Surgery", booked_by: null },
+  { slot_id: "SLOT-024", ot_room: "OT-4", date: "2026-07-04", date_display: "Sat, 4 July 2026",  time: "12:30", time_end: "14:30", duration_mins: 120, status: "available", specialty: "Orthopaedics",    booked_by: null },
+  // July 5
+  { slot_id: "SLOT-025", ot_room: "OT-1", date: "2026-07-05", date_display: "Sun, 5 July 2026",  time: "08:00", time_end: "10:00", duration_mins: 120, status: "available", specialty: "General Surgery", booked_by: null },
+  { slot_id: "SLOT-026", ot_room: "OT-2", date: "2026-07-05", date_display: "Sun, 5 July 2026",  time: "09:00", time_end: "12:00", duration_mins: 180, status: "available", specialty: "Cardiac Surgery", booked_by: null },
+  { slot_id: "SLOT-027", ot_room: "OT-3", date: "2026-07-05", date_display: "Sun, 5 July 2026",  time: "10:00", time_end: "11:00", duration_mins: 60,  status: "available", specialty: "Neuro Surgery",   booked_by: null },
+  { slot_id: "SLOT-028", ot_room: "OT-4", date: "2026-07-05", date_display: "Sun, 5 July 2026",  time: "13:00", time_end: "15:00", duration_mins: 120, status: "available", specialty: "Orthopaedics",    booked_by: null },
 ];
 
 // ─── PATIENTS ────────────────────────────────────────────────────────────────
