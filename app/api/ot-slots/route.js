@@ -8,7 +8,7 @@ export async function GET(request) {
   const date = searchParams.get('date');
   const status = searchParams.get('status');
 
-  let slots = JSON.parse(await redis.get(SLOTS_KEY) || JSON.stringify(otSlots));
+  let slots = (await redis.get(SLOTS_KEY)) || otSlots;
 
   if (date) slots = slots.filter(s => s.date === date);
   if (status) slots = slots.filter(s => s.status === status);

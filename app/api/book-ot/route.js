@@ -4,20 +4,6 @@ import { otSlots, bookings as initialBookings } from '../../data';
 const SLOTS_KEY = 'ot:slots';
 const BOOKINGS_KEY = 'ot:bookings';
 
-async function getSlots() {
-  const cached = await redis.get(SLOTS_KEY);
-  if (cached) return cached;
-  await redis.set(SLOTS_KEY, JSON.stringify(otSlots));
-  return otSlots;
-}
-
-async function getBookings() {
-  const cached = await redis.get(BOOKINGS_KEY);
-  if (cached) return cached;
-  await redis.set(BOOKINGS_KEY, JSON.stringify(initialBookings));
-  return initialBookings;
-}
-
 export async function POST(request) {
   try {
     const body = await request.json();
@@ -27,8 +13,8 @@ export async function POST(request) {
       return Response.json({ success: false, error: 'Missing required fields' }, { status: 400 });
     }
 
-    const slots = JSON.parse(await redis.get(SLOTS_KEY) || JSON.stringify(otSlots));
-    const bookings = JSON.parse(await redis.get(BOOKINGS_KEY) || JSON.stringify(initialBookings));
+    const slots = (await redis.get(SLOTS_KEY)) || otSlots;
+    const bookings = (await redis.get(BOOKINGS_KEY)) || initialBookings;
 
     let slot;
     if (slot_id && slot_id !== 'undefined' && slot_id !== '') {
@@ -68,8 +54,8 @@ export async function POST(request) {
 
     bookings.push(booking);
 
-    await redis.set(SLOTS_KEY, JSON.stringify(slots));
-    await redis.set(BOOKINGS_KEY, JSON.stringify(bookings));
+    await redis.set(SLOTS_KEY, slots);
+    await redis.set(BOOKINGS_KEY, bookings);
 
     return Response.json({ success: true, message: `OT slot successfully booked for ${patient_name}`, booking }, { status: 201 });
   } catch (err) {
@@ -78,7 +64,7 @@ export async function POST(request) {
 }
 
 export async function GET() {
-  const bookings = JSON.parse(await redis.get(BOOKINGS_KEY) || JSON.stringify(initialBookings));
+  const bookings = (await redis.get(BOOKINGS_KEY)) || initialBookings;
   return Response.json({ success: true, total: bookings.length, bookings });
 }
 
@@ -87,8 +73,8 @@ export async function PATCH(request) {
     const body = await request.json();
     const { booking_id, new_slot_id } = body;
 
-    const slots = JSON.parse(await redis.get(SLOTS_KEY) || JSON.stringify(otSlots));
-    const bookings = JSON.parse(await redis.get(BOOKINGS_KEY) || JSON.stringify(initialBookings));
+    const slots = (await redis.get(SLOTS_KEY)) || otSlots;
+    const bookings = (await redis.get(BOOKINGS_KEY)) || initialBookings;
 
     const booking = bookings.find(b => b.booking_id === booking_id);
     if (!booking) return Response.json({ success: false, error: 'Booking not found' }, { status: 404 });
@@ -111,8 +97,8 @@ export async function PATCH(request) {
     booking.time_end = newSlot.time_end;
     booking.status = 'rescheduled';
 
-    await redis.set(SLOTS_KEY, JSON.stringify(slots));
-    await redis.set(BOOKINGS_KEY, JSON.stringify(bookings));
+    await redis.set(SLOTS_KEY, slots);
+    await redis.set(BOOKINGS_KEY, bookings);
 
     return Response.json({ success: true, message: `Booking rescheduled to ${newSlot.date_display} ${newSlot.time}–${newSlot.time_end}`, booking });
   } catch (err) {
@@ -125,8 +111,8 @@ export async function DELETE(request) {
     const body = await request.json();
     const { booking_id } = body;
 
-    const slots = JSON.parse(await redis.get(SLOTS_KEY) || JSON.stringify(otSlots));
-    const bookings = JSON.parse(await redis.get(BOOKINGS_KEY) || JSON.stringify(initialBookings));
+    const slots = (await redis.get(SLOTS_KEY)) || otSlots;
+    const bookings = (await redis.get(BOOKINGS_KEY)) || initialBookings;
 
     const idx = bookings.findIndex(b => b.booking_id === booking_id);
     if (idx === -1) return Response.json({ success: false, error: 'Booking not found' }, { status: 404 });
@@ -137,8 +123,8 @@ export async function DELETE(request) {
 
     bookings[idx].status = 'cancelled';
 
-    await redis.set(SLOTS_KEY, JSON.stringify(slots));
-    await redis.set(BOOKINGS_KEY, JSON.stringify(bookings));
+    await redis.set(SLOTS_KEY, slots);
+    await redis.set(BOOKINGS_KEY, bookings);
 
     return Response.json({ success: true, message: `Booking ${booking_id} cancelled successfully`, booking: bookings[idx] });
   } catch (err) {
