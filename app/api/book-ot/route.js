@@ -63,10 +63,36 @@ export async function POST(request) {
   }
 }
 
-export async function GET() {
-  const bookings = (await redis.get(BOOKINGS_KEY)) || initialBookings;
+// ===== UPDATED GET FUNCTION — supports filtering =====
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const patient_name = searchParams.get('patient_name');
+  const procedure = searchParams.get('procedure');
+  const status = searchParams.get('status');
+  const booking_id = searchParams.get('booking_id');
+
+  let bookings = (await redis.get(BOOKINGS_KEY)) || initialBookings;
+
+  if (booking_id) {
+    bookings = bookings.filter(b => b.booking_id === booking_id);
+  }
+  if (patient_name) {
+    bookings = bookings.filter(b =>
+      b.patient_name.toLowerCase().includes(patient_name.toLowerCase())
+    );
+  }
+  if (procedure) {
+    bookings = bookings.filter(b =>
+      b.procedure.toLowerCase().includes(procedure.toLowerCase())
+    );
+  }
+  if (status) {
+    bookings = bookings.filter(b => b.status === status);
+  }
+
   return Response.json({ success: true, total: bookings.length, bookings });
 }
+// ===== END UPDATED SECTION =====
 
 export async function PATCH(request) {
   try {
