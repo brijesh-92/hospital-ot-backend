@@ -63,7 +63,6 @@ export async function POST(request) {
   }
 }
 
-// ===== UPDATED GET FUNCTION — supports filtering =====
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const patient_name = searchParams.get('patient_name');
@@ -87,12 +86,11 @@ export async function GET(request) {
     );
   }
   if (status) {
-    bookings = bookings.filter(b => b.status === status);
+    bookings = bookings.filter(b => b.status.toLowerCase() === status.toLowerCase());
   }
 
   return Response.json({ success: true, total: bookings.length, bookings });
 }
-// ===== END UPDATED SECTION =====
 
 export async function PATCH(request) {
   try {
