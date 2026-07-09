@@ -125,7 +125,7 @@ export default function Dashboard() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
               {/* Today's OT Slots */}
               <Card title="📅 Today's OT Schedule" accent="#1e3a5f">
-                {slots.slots.filter(s => s.date === '2026-06-29').map(s => (
+                {slots.slots.filter(s => s.date === new Date().toLocaleDateString('en-CA')).map(s => (
                   <div key={s.slot_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #F1F5F9' }}>
                     <div>
                       <div style={{ fontWeight: 600, fontSize: 14 }}>{s.ot_room} — {s.time}</div>
