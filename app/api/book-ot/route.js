@@ -123,6 +123,7 @@ export async function PATCH(request) {
     booking.date_display = newSlot.date_display;
     booking.time = newSlot.time;
     booking.time_end = newSlot.time_end;
+    booking.duration_mins = newSlot.duration_mins;
     booking.status = 'rescheduled';
 
     await redis.set(SLOTS_KEY, slots);
