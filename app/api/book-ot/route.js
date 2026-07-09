@@ -86,7 +86,11 @@ export async function GET(request) {
     );
   }
   if (status) {
-    bookings = bookings.filter(b => b.status.toLowerCase() === status.toLowerCase());
+    if (status.toLowerCase() === 'active') {
+      bookings = bookings.filter(b => ['confirmed', 'rescheduled'].includes(b.status.toLowerCase()));
+    } else {
+      bookings = bookings.filter(b => b.status.toLowerCase() === status.toLowerCase());
+    }
   }
 
   return Response.json({ success: true, total: bookings.length, bookings });
